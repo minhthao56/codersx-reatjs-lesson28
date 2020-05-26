@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import CreateUser from "./components/CreateUser";
 import Home from "./components/Home";
+import Login from "./components/Login";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
@@ -11,6 +12,9 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/user/login">
+            <Login />
           </Route>
           <Route path="/user/create">
             <CreateUser />

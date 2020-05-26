@@ -11,6 +11,9 @@ export class Home extends Component {
           <li>
             <Link to="/user/create">CreateUser</Link>
           </li>
+          <li>
+            <Link to="/user/login">Login</Link>
+          </li>
         </ul>
 
         <hr />

@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Creata endpoint
-app.get("/", (req, res) => res.send("Hello World!"));
 app.use("/users", userRouter);
 
 //Listen

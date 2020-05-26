@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
-import "../styles/CreateUser.css";
-import { Link } from "react-router-dom";
+import "../styles/Login.css";
+import { Link, Redirect } from "react-router-dom";
 import appleImage from "../images/app-icon.png";
 import playStoreImage from "../images/googleplay.png";
 import axios from "axios";
 
-export class CreateUser extends Component {
+export class Login extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
       email: "",
       password: "",
-      // file: null,
+      mes: "",
+      isAuth: false,
     };
   }
   handleChange = (event) => {
@@ -25,52 +25,44 @@ export class CreateUser extends Component {
       [name]: value,
     });
   };
-
-  // handleFile = (event) => {
-  //   this.setState({
-  //     file: event.target.files[0],
-  //   });
-  // };
   handleSubmit = (event) => {
     event.preventDefault();
-    // const fd = new FormData();
+
     const user = {
-      name: this.state.name,
       email: this.state.email,
       password: this.state.password,
     };
-    this.setState({
-      name: "",
-      email: "",
-      password: "",
-    });
-    // fd.append("fileavatar", this.state.file);
-    axios.post("http://localhost:3001/users/create", user).then((res) => {
-      console.log(res);
-      console.log(res.data);
-    });
+    axios
+      .post("http://localhost:3001/users/login", user)
+      .then((res) => {
+        this.setState({
+          isAuth: true,
+        });
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          this.setState({
+            mes: err.response.data.msg,
+          });
+        }
+      });
   };
 
   render() {
+    if (this.state.isAuth === true) {
+      return <Redirect to="/" />;
+    }
     return (
       <div className="container-fluid">
         <div className="container-form">
           <img src={ImgInstagram} alt="" />
-          <h6>Sign up to see photos and videos from your friends.</h6>
-          <form
-            method="POST"
-            onSubmit={this.handleSubmit}
-            enctype="multipart/form-data"
-          >
-            <div className="form-group">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={this.state.name}
-                onChange={this.handleChange}
-              ></input>
+          {this.state.mes ? (
+            <div className="alert alert-danger" role="alert">
+              {this.state.mes}
             </div>
+          ) : null}
+
+          <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
             <div className="form-group">
               <input
                 type="email"
@@ -89,22 +81,13 @@ export class CreateUser extends Component {
                 onChange={this.handleChange}
               ></input>
             </div>
-            {/* <label for="file">Your Avatar</label>
-          <br />
-          <div className="form-group">
-            <input type="file" onChange={this.handleFile} />
-          </div> */}
 
-            <button type="submit">Sign up</button>
-            <p className="policy">
-              By signing up, you agree to our{" "}
-              <b>Terms , Data Policy and Cookies Policy .</b>
-            </p>
+            <button type="submit">Log in</button>
           </form>
         </div>
         <div className="have-account">
           <span>
-            Have an account? <Link to="/user/login">Log in</Link>
+            Don't have an account? <Link to="/user/create">Sign up</Link>
           </span>
         </div>
         <div className="image-link">
@@ -127,4 +110,4 @@ export class CreateUser extends Component {
   }
 }
 
-export default CreateUser;
+export default Login;
