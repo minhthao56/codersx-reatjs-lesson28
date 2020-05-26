@@ -39,7 +39,11 @@ export class CreateUser extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    console.log(user);
+    this.setState({
+      name: "",
+      email: "",
+      password: "",
+    });
     // fd.append("fileavatar", this.state.file);
     axios.post("http://localhost:3001/users/create", user).then((res) => {
       console.log(res);
