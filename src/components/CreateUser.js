@@ -1,31 +1,123 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import ImgInstagram from "../images/1200px-Instagram_logo.svg.png"
+import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
+import "../styles/CreateUser.css";
+import { Link } from "react-router-dom";
+import appleImage from "../images/app-icon.png";
+import playStoreImage from "../images/googleplay.png";
+import axios from "axios";
 
 export class CreateUser extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      // file: null,
+    };
+  }
+  handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  // handleFile = (event) => {
+  //   this.setState({
+  //     file: event.target.files[0],
+  //   });
+  // };
+  handleSubmit = (event) => {
+    event.preventDefault();
+    // const fd = new FormData();
+    const user = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+    };
+    console.log(user);
+    // fd.append("fileavatar", this.state.file);
+    axios.post("http://localhost:3001/users/create", user).then((res) => {
+      console.log(res);
+      console.log(res.data);
+    });
+  };
+
   render() {
     return (
-      <div className="container-form">
-        <img src ={ImgInstagram}>
-        <form>
-          <div className="form-group">
-            <label for="tEmail">Email address</label>
-            <input type="email"></input>
-          </div>
-          <div className="form-group">
-            <label for="Password">Password</label>
-            <input type="email"></input>
-          </div>
-          <label for="Password">Your Avatar</label>
+      <div className="container-fluid">
+        <div className="container-form">
+          <img src={ImgInstagram} alt="" />
+          <h6>Sign up to see photos and videos from your friends.</h6>
+          <form
+            method="POST"
+            onSubmit={this.handleSubmit}
+            enctype="multipart/form-data"
+          >
+            <div className="form-group">
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={this.state.name}
+                onChange={this.handleChange}
+              ></input>
+            </div>
+            <div className="form-group">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={this.handleChange}
+              ></input>
+            </div>
+            <div className="form-group">
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={this.handleChange}
+              ></input>
+            </div>
+            {/* <label for="file">Your Avatar</label>
           <br />
           <div className="form-group">
-            <input type="file" />
-          </div>
+            <input type="file" onChange={this.handleFile} />
+          </div> */}
 
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
+            <button type="submit">Sign up</button>
+            <p className="policy">
+              By signing up, you agree to our{" "}
+              <b>Terms , Data Policy and Cookies Policy .</b>
+            </p>
+          </form>
+        </div>
+        <div className="have-account">
+          <span>
+            Have an account? <Link to="/user/create">Log in</Link>
+          </span>
+        </div>
+        <div className="image-link">
+          <p>Get the app.</p>
+          <a
+            target="_blank"
+            href="https://apps.apple.com/app/instagram/id389801252?vt=lo"
+          >
+            <img src={appleImage} />
+          </a>
+          <a
+            target="_blank"
+            href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DsignupPage%26ig_mid%3DA85B7263-C3FB-4EA7-B5ED-8E7CF284B2BA%26utm_content%3Dlo%26utm_medium%3Dbadge"
+          >
+            <img src={playStoreImage} />
+          </a>
+        </div>
       </div>
     );
   }
