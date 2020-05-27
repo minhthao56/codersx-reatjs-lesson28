@@ -11,20 +11,23 @@ cloudinary.config({
 
 //Create User
 module.exports.postStatus = async function (req, res) {
-  console.log(req.file.path);
-  console.log(req.body.user);
-  console.log(req.body.post);
+  // console.log(req.file.path);
+  // console.log(req.body.user);
+  // console.log(req.body.title);
+  // console.log(req.body.description);
+
   let path = req.file.path;
   var result = await cloudinary.uploader.upload(path, function (error, result) {
     console.log(error);
   });
   let imagePosUrl = result.url;
-  let description = req.body.post;
+  let title = req.body.title;
+  let description = req.body.description;
   let idUser = req.body.user;
 
   let dataPost = await Post.insertMany({
     idUser: idUser,
-    title: "I am here",
+    title: title,
     description: description,
     imagePosUrl: imagePosUrl,
   });

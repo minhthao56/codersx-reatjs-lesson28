@@ -1,17 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { connect } from "mongoose";
 export class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      value: "",
+      title: "",
+      description: "",
     };
   }
   handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
     this.setState({
-      value: event.target.value,
+      [name]: value,
     });
   };
   //file
@@ -24,11 +29,13 @@ export class Home extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const user = this.props.user;
-    const post = this.state.value;
+    const title = this.state.title;
+    const description = this.state.description;
     const fd = new FormData();
     fd.append("fileImagePost", this.state.file);
     fd.append("user", user._id);
-    fd.append("post", post);
+    fd.append("title", title);
+    fd.append("description", description);
 
     axios.post("http://localhost:3001/posts/status", fd).then((res) => {
       console.log(res);
@@ -53,10 +60,17 @@ export class Home extends Component {
         {/* Home */}
         <div>
           <form onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              name="title"
+              onChange={this.handleChange}
+              value={this.state.title}
+            />
             <textarea
               rows="7"
               cols="50"
-              value={this.state.value}
+              name="description"
+              value={this.state.description}
               onChange={this.handleChange}
             ></textarea>
             <input type="file" onChange={this.handleFile} />
