@@ -6,6 +6,7 @@ const cors = require("cors");
 
 // Require internal
 const userRouter = require("./routers/users.router");
+const postRouter = require("./routers/post.router");
 
 //Port
 const port = 3001;
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Creata endpoint
 app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 //Listen
 app.listen(port, () =>

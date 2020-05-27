@@ -11,13 +11,6 @@ cloudinary.config({
 
 //Create User
 module.exports.createUser = async function (req, res) {
-  //   let file = req.file.path;
-  //   var result = await cloudinary.uploader.upload(patch, function (
-  //     error,
-  //     result
-  //   ) {
-  //     console.log(error);
-  //   });
   req.body.avatarUrl =
     "https://res.cloudinary.com/du4arxzzj/image/upload/v1590497543/user_lp41pe.png";
   req.body.password = bcrypt.hashSync(req.body.password, 10);
@@ -29,7 +22,6 @@ module.exports.login = async function (req, res) {
   const email = req.body.email;
   const password = req.body.password;
   const user = await Users.findOne({ email: email });
-  console.log(user);
   if (!user) {
     res.status(401);
     res.json({ msg: "Email wrong" });

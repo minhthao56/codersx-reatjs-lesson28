@@ -14,7 +14,6 @@ export class CreateUser extends Component {
       name: "",
       email: "",
       password: "",
-      // file: null,
     };
   }
   handleChange = (event) => {
@@ -26,14 +25,8 @@ export class CreateUser extends Component {
     });
   };
 
-  // handleFile = (event) => {
-  //   this.setState({
-  //     file: event.target.files[0],
-  //   });
-  // };
   handleSubmit = (event) => {
     event.preventDefault();
-    // const fd = new FormData();
     const user = {
       name: this.state.name,
       email: this.state.email,
@@ -44,7 +37,6 @@ export class CreateUser extends Component {
       email: "",
       password: "",
     });
-    // fd.append("fileavatar", this.state.file);
     axios.post("http://localhost:3001/users/create", user).then((res) => {
       console.log(res);
       console.log(res.data);
@@ -89,11 +81,6 @@ export class CreateUser extends Component {
                 onChange={this.handleChange}
               ></input>
             </div>
-            {/* <label for="file">Your Avatar</label>
-          <br />
-          <div className="form-group">
-            <input type="file" onChange={this.handleFile} />
-          </div> */}
 
             <button type="submit">Sign up</button>
             <p className="policy">

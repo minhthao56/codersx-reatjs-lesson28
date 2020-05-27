@@ -15,6 +15,7 @@ export class Login extends Component {
       password: "",
       mes: "",
       isAuth: false,
+      dataUser: {},
     };
   }
   handleChange = (event) => {
@@ -37,8 +38,12 @@ export class Login extends Component {
       .then((res) => {
         this.setState({
           isAuth: true,
+          dataUser: res.data,
         });
+
+        this.props.PassDataToApp(this.state.dataUser);
       })
+
       .catch((err) => {
         if (err.response.status === 401) {
           this.setState({
@@ -81,7 +86,6 @@ export class Login extends Component {
                 onChange={this.handleChange}
               ></input>
             </div>
-
             <button type="submit">Log in</button>
           </form>
         </div>
