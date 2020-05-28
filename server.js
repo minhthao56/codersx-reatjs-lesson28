@@ -13,7 +13,10 @@ const port = 3001;
 // Connect mongoBD
 const uri =
   "mongodb+srv://minhthao56:minhthao56@cluster0-dfzmq.gcp.mongodb.net/instagram?retryWrites=true&w=majority";
-mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(uri, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("connecting to momgoDB cloud...");

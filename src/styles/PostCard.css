@@ -5,6 +5,7 @@
   border-color: rgba(150, 150, 150, 0.3);
   border-radius: 3px;
   margin-bottom: 20px;
+  background-color: white;
 }
 .header-card {
   display: flex;
@@ -52,4 +53,59 @@
 .icon-heart span {
   margin-left: 10px;
   font-size: 12px;
+}
+.container-comments {
+  padding-bottom: 10px;
+}
+.comment {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 12.5px;
+  margin-top: 10px;
+  border: solid;
+  padding: 5px;
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  border-color: rgba(150, 150, 150, 0.3);
+  border-radius: 50px;
+  background-color: #fafafa;
+}
+.comment img {
+  height: 24px;
+  width: 24px;
+}
+.name-comment {
+  padding-left: 10px;
+  font-weight: bold;
+}
+.comment-content {
+  margin-left: 10px;
+}
+.form-comment {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.form-comment form {
+  display: flex;
+}
+.form-comment input {
+  flex: 1;
+  font-size: 13px;
+}
+.form-comment input:focus {
+  outline: none;
+}
+.form-comment button,
+input {
+  border: none;
+  background-color: white;
+  border-bottom: solid;
+  border-color: rgba(150, 150, 150, 0.3);
+  border-width: 1px;
+}
+.form-comment button {
+  font-size: 14px;
+  color: #3aacf7;
+  font-weight: bold;
 }

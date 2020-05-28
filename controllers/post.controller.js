@@ -46,6 +46,7 @@ module.exports.getPosts = async function (req, res) {
       description: post.description,
       imagePosUrl: post.imagePosUrl,
       createdAt: post.createdAt,
+      comment: post.comment,
     };
   });
 
@@ -56,14 +57,48 @@ module.exports.getPosts = async function (req, res) {
       avatarUrl: user.avatarUrl,
     };
   });
-  let allUserPosted = [];
+  let allPosted = [];
   for (post of Posts) {
     for (user of users) {
       if (post.idUser === user.id_user) {
         let postAndUser = Object.assign(post, user);
-        allUserPosted.push(postAndUser);
+        allPosted.push(postAndUser);
       }
     }
   }
-  res.json(allUserPosted);
+
+  for (let posted of allPosted) {
+    for (let comment of posted.comment) {
+      for (let user of users) {
+        if (comment.id_user_commented === user.id_user) {
+          Object.assign(comment, user);
+        }
+      }
+    }
+  }
+
+  res.json(allPosted);
+};
+// Post moment in to post
+module.exports.postComments = async function (req, res) {
+  const comment = req.body;
+  // const userCommented = await Users.findOne({
+  //   _id: comment.id_user_commented,
+  // });
+  // const separatedUser = {
+  //   name_user_commented: userCommented.name,
+  //   avatarUrl_user_commented: userCommented.avatarUrl,
+  // };
+
+  // const combineUser = Object.assign(comment, separatedUser);
+
+  const commentedPost = await Post.findOneAndUpdate(
+    { _id: comment.id_post },
+    {
+      $addToSet: { comment: comment },
+    },
+    { upsert: true, new: true, runValidators: true }
+  );
+  console.log(commentedPost);
+  res.json(commentedPost);
 };

@@ -32,14 +32,15 @@ export class CreateUser extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    this.setState({
-      name: "",
-      email: "",
-      password: "",
-    });
+
     axios.post("http://localhost:3001/users/create", user).then((res) => {
-      console.log(res);
-      console.log(res.data);
+      // console.log(res);
+      // console.log(res.data); chuyển từ trên xuống
+      this.setState({
+        name: "",
+        email: "",
+        password: "",
+      });
     });
   };
 

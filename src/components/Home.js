@@ -54,6 +54,7 @@ export class Home extends Component {
       this.setState({
         dataPost: res.data,
       });
+      console.log(this.state.dataPost);
     });
   }
   componentDidUpdate() {
@@ -66,7 +67,6 @@ export class Home extends Component {
 
   render() {
     const dataPost = this.state.dataPost;
-
     return (
       <div className="container-fluid">
         <p>{this.props.user.name}</p>
@@ -113,6 +113,9 @@ export class Home extends Component {
                 createdAt={post.createdAt}
                 description={post.description}
                 index={index}
+                useLoggedIn={this.props.user}
+                id_post={post.id_post}
+                comment={post.comment}
               />
             );
           })}

@@ -8,5 +8,6 @@ const controller = require("../controllers/post.controller");
 router.get("/status", controller.getPosts);
 
 router.post("/status", upload.single("fileImagePost"), controller.postStatus);
+router.post("/comments", controller.postComments);
 
 module.exports = router;
