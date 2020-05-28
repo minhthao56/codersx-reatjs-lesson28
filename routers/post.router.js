@@ -5,9 +5,7 @@ const upload = multer({ dest: "uploads/" });
 const controller = require("../controllers/post.controller");
 
 //End ponit post status
-router.get("/status", function (req, res) {
-  res.send("ok chưa");
-});
+router.get("/status", controller.getPosts);
 
 router.post("/status", upload.single("fileImagePost"), controller.postStatus);
 

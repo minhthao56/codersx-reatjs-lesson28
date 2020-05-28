@@ -9,7 +9,7 @@ export class App extends Component {
   constructor() {
     super();
     this.state = {
-      dataUser: "",
+      dataUser: {},
     };
   }
   DataUser = (dataUser) => {
@@ -20,7 +20,6 @@ export class App extends Component {
   render() {
     return (
       <Router>
-        <div>{this.state.dataUser.name}Ok chưa</div>
         <div>
           <Switch>
             <Route exact path="/">

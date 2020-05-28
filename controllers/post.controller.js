@@ -1,6 +1,6 @@
 const Post = require("../model/post.model");
-const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary").v2;
+const Users = require("../model/users.model");
 
 //Cloudinary
 cloudinary.config({
@@ -9,7 +9,7 @@ cloudinary.config({
   api_secret: "hDcEoltxpFdpSkkBeffwV7-Rqso",
 });
 
-//Create User
+//Create a post
 module.exports.postStatus = async function (req, res) {
   // console.log(req.file.path);
   // console.log(req.body.user);
@@ -32,4 +32,38 @@ module.exports.postStatus = async function (req, res) {
     imagePosUrl: imagePosUrl,
   });
   res.json(dataPost);
+};
+
+// get dato post form DB
+module.exports.getPosts = async function (req, res) {
+  const allUser = await Users.find();
+  const allPost = await Post.find();
+  const Posts = allPost.map(function (post) {
+    return {
+      id_post: post._id.toString(),
+      idUser: post.idUser,
+      title: post.title,
+      description: post.description,
+      imagePosUrl: post.imagePosUrl,
+      createdAt: post.createdAt,
+    };
+  });
+
+  const users = allUser.map(function (user) {
+    return {
+      id_user: user._id.toString(),
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+    };
+  });
+  let allUserPosted = [];
+  for (post of Posts) {
+    for (user of users) {
+      if (post.idUser === user.id_user) {
+        let postAndUser = Object.assign(post, user);
+        allUserPosted.push(postAndUser);
+      }
+    }
+  }
+  res.json(allUserPosted);
 };

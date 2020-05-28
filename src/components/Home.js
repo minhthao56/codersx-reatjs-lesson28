@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { connect } from "mongoose";
+import PostCards from "../components/PostCards";
+import "../styles/Home.css";
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -9,8 +10,10 @@ export class Home extends Component {
       file: null,
       title: "",
       description: "",
+      dataPost: [],
     };
   }
+  // Handle inputs
   handleChange = (event) => {
     const target = event.target;
     const name = target.name;
@@ -19,13 +22,13 @@ export class Home extends Component {
       [name]: value,
     });
   };
-  //file
+  // Handle and file
   handleFile = (event) => {
     this.setState({
       file: event.target.files[0],
     });
   };
-  //form
+  //Handle submit form
   handleSubmit = (event) => {
     event.preventDefault();
     const user = this.props.user;
@@ -38,13 +41,35 @@ export class Home extends Component {
     fd.append("description", description);
 
     axios.post("http://localhost:3001/posts/status", fd).then((res) => {
-      console.log(res);
-      console.log(res.data);
+      this.setState({
+        file: null,
+        title: "",
+        description: "",
+      });
     });
   };
+  // Render all post
+  componentDidMount() {
+    axios.get("http://localhost:3001/posts/status").then((res) => {
+      this.setState({
+        dataPost: res.data,
+      });
+    });
+  }
+  componentDidUpdate() {
+    axios.get("http://localhost:3001/posts/status").then((res) => {
+      this.setState({
+        dataPost: res.data,
+      });
+    });
+  }
+
   render() {
+    const dataPost = this.state.dataPost;
+
     return (
-      <div>
+      <div className="container-fluid">
+        <p>{this.props.user.name}</p>
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -58,7 +83,7 @@ export class Home extends Component {
         </ul>
         <hr />
         {/* Home */}
-        <div>
+        <div className="container-post">
           <form onSubmit={this.handleSubmit}>
             <input
               type="text"
@@ -76,6 +101,21 @@ export class Home extends Component {
             <input type="file" onChange={this.handleFile} />
             <button type="submit">Post</button>
           </form>
+        </div>
+        <div>
+          {dataPost.map((post, index) => {
+            return (
+              <PostCards
+                name={post.name}
+                avatarUrl={post.avatarUrl}
+                imagePosUrl={post.imagePosUrl}
+                title={post.title}
+                createdAt={post.createdAt}
+                description={post.description}
+                index={index}
+              />
+            );
+          })}
         </div>
       </div>
     );
