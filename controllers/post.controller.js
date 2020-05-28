@@ -82,16 +82,6 @@ module.exports.getPosts = async function (req, res) {
 // Post moment in to post
 module.exports.postComments = async function (req, res) {
   const comment = req.body;
-  // const userCommented = await Users.findOne({
-  //   _id: comment.id_user_commented,
-  // });
-  // const separatedUser = {
-  //   name_user_commented: userCommented.name,
-  //   avatarUrl_user_commented: userCommented.avatarUrl,
-  // };
-
-  // const combineUser = Object.assign(comment, separatedUser);
-
   const commentedPost = await Post.findOneAndUpdate(
     { _id: comment.id_post },
     {

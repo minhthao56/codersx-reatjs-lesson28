@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
-import "../styles/Login.css";
 import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/Login.css";
+
 import appleImage from "../images/app-icon.png";
 import playStoreImage from "../images/googleplay.png";
-import axios from "axios";
+import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
 
 export class Login extends Component {
   constructor() {

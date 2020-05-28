@@ -36,7 +36,6 @@ export class PostCards extends Component {
       this.setState({
         comment: "",
       });
-      console.log(res.data);
     });
   };
   render() {

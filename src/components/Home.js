@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
 import PostCards from "../components/PostCards";
 import "../styles/Home.css";
 export class Home extends Component {
