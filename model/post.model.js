@@ -7,6 +7,7 @@ let postSchema = new mongoose.Schema(
     description: String,
     imagePosUrl: String,
     comment: Array,
+    like: Array,
   },
   {
     timestamps: true,

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import HeartImage from "../images/heart.svg";
+import HeartImageRed from "../images/heart -red.svg";
 
 import "../styles/PostCard.css";
 
@@ -17,6 +18,7 @@ export class PostCards extends Component {
       comment: "",
     };
   }
+  // Handle Comments
   handleValueComment = (event) => {
     this.setState({
       comment: event.target.value,
@@ -38,6 +40,29 @@ export class PostCards extends Component {
       });
     });
   };
+  //Handle like
+  handleLike = () => {
+    const useLoggedIn = this.props.useLoggedIn;
+    const id_post = this.props.id_post;
+    const like = {
+      id_user_liked: useLoggedIn._id,
+      id_post: id_post,
+    };
+    axios.post("http://localhost:3001/posts/like", like).then((res) => {
+      // console.log(res.data);
+    });
+  };
+  handleUnLike = () => {
+    const useLoggedIn = this.props.useLoggedIn;
+    const id_post = this.props.id_post;
+    const like = {
+      id_user_liked: useLoggedIn._id,
+      id_post: id_post,
+    };
+    axios.post("http://localhost:3001/posts/unlike", like).then((res) => {
+      // console.log(res.data);
+    });
+  };
   render() {
     const {
       name,
@@ -48,7 +73,12 @@ export class PostCards extends Component {
       description,
       index,
       comment,
+      like,
     } = this.props;
+    const useLoggedIn = this.props.useLoggedIn;
+    const arrIdUserLiked = like.filter(function (userLiked) {
+      return userLiked.id_user_liked === useLoggedIn._id;
+    });
     return (
       <div className="container-postcard">
         <div className="header-card">
@@ -61,7 +91,12 @@ export class PostCards extends Component {
         <div className="context-card">
           <img src={imagePosUrl} />
           <div className="icon-heart">
-            <img src={HeartImage} />
+            {arrIdUserLiked.length ? (
+              <img src={HeartImageRed} onClick={this.handleUnLike} />
+            ) : (
+              <img src={HeartImage} onClick={this.handleLike} />
+            )}
+            <span>{like.length}Peple</span>
             <span>
               <Moment fromNow>{createdAt}</Moment>
             </span>

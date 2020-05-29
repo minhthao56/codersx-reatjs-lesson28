@@ -47,6 +47,7 @@ module.exports.getPosts = async function (req, res) {
       imagePosUrl: post.imagePosUrl,
       createdAt: post.createdAt,
       comment: post.comment,
+      like: post.like,
     };
   });
 
@@ -89,6 +90,39 @@ module.exports.postComments = async function (req, res) {
     },
     { upsert: true, new: true, runValidators: true }
   );
-  console.log(commentedPost);
   res.json(commentedPost);
+};
+
+// Update Like
+module.exports.postLike = async function (req, res) {
+  const like = req.body;
+  const likedPost = await Post.findOneAndUpdate(
+    { _id: like.id_post },
+    {
+      $addToSet: { like: like },
+    },
+    { upsert: true, new: true, runValidators: true }
+  );
+  res.json(likedPost);
+};
+
+// Remove Like
+
+module.exports.postUnLike = async function (req, res) {
+  const unlike = req.body;
+  const likedPost = await Post.findOne({ _id: unlike.id_post });
+  const listLike = likedPost.like;
+  const userLiked = listLike.map(function (like) {
+    return like.id_user_liked;
+  });
+  const indexOf = userLiked.indexOf(unlike.id_user_liked);
+  const cutUseLike = listLike.splice(indexOf, 1);
+  const save = await Post.findByIdAndUpdate(
+    { _id: unlike.id_post },
+    {
+      $set: { like: listLike },
+    }
+  );
+
+  res.json(likedPost);
 };

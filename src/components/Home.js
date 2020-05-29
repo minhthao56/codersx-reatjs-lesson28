@@ -55,7 +55,6 @@ export class Home extends Component {
       this.setState({
         dataPost: res.data,
       });
-      console.log(this.state.dataPost);
     });
   }
   componentDidUpdate() {
@@ -117,6 +116,7 @@ export class Home extends Component {
                 useLoggedIn={this.props.user}
                 id_post={post.id_post}
                 comment={post.comment}
+                like={post.like}
               />
             );
           })}

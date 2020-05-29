@@ -9,5 +9,7 @@ router.get("/status", controller.getPosts);
 
 router.post("/status", upload.single("fileImagePost"), controller.postStatus);
 router.post("/comments", controller.postComments);
+router.post("/like", controller.postLike);
+router.post("/unlike", controller.postUnLike);
 
 module.exports = router;
