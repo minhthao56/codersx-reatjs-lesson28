@@ -4,6 +4,8 @@ import axios from "axios";
 
 import PostCards from "../components/PostCards";
 import "../styles/Home.css";
+import HeartImage from "../images/heart.svg";
+import NotificationCard from "../components/NotificationCard";
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +59,8 @@ export class Home extends Component {
       });
     });
   }
+
+  // Update re-render
   componentDidUpdate() {
     axios.get("http://localhost:3001/posts/status").then((res) => {
       this.setState({
@@ -67,6 +71,9 @@ export class Home extends Component {
 
   render() {
     const dataPost = this.state.dataPost;
+
+    const idUserLogin = this.props.user._id;
+
     return (
       <div className="container-fluid">
         <p>{this.props.user.name}</p>
@@ -79,6 +86,11 @@ export class Home extends Component {
           </li>
           <li>
             <Link to="/user/login">Login</Link>
+          </li>
+          <li>
+            <img src={HeartImage} onClick={this.handleNotification} />
+            <span>(1)</span>
+            <NotificationCard idUserLogin={idUserLogin} />
           </li>
         </ul>
         <hr />
@@ -117,6 +129,7 @@ export class Home extends Component {
                 id_post={post.id_post}
                 comment={post.comment}
                 like={post.like}
+                idUser={post.idUser}
               />
             );
           })}

@@ -6,6 +6,7 @@ let userSchema = new mongoose.Schema(
     email: String,
     avatarUrl: String,
     password: String,
+    notification: Array,
   },
   {
     timestamps: true,

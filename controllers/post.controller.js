@@ -34,7 +34,7 @@ module.exports.postStatus = async function (req, res) {
   res.json(dataPost);
 };
 
-// get dato post form DB
+// get data post form DB
 module.exports.getPosts = async function (req, res) {
   const allUser = await Users.find();
   const allPost = await Post.find();
@@ -107,7 +107,6 @@ module.exports.postLike = async function (req, res) {
 };
 
 // Remove Like
-
 module.exports.postUnLike = async function (req, res) {
   const unlike = req.body;
   const likedPost = await Post.findOne({ _id: unlike.id_post });
@@ -123,6 +122,63 @@ module.exports.postUnLike = async function (req, res) {
       $set: { like: listLike },
     }
   );
-
   res.json(likedPost);
+};
+
+// postNotification
+module.exports.postNotification = async function (req, res) {
+  const notification = req.body;
+  if (notification.id_user_post === notification.id_user_liked) {
+    return res.json("người like là người đăng bài nha!!");
+  }
+  const notificationForUser = await Users.findOneAndUpdate(
+    { _id: notification.id_user_post },
+    {
+      $addToSet: { notification: notification },
+    },
+    { upsert: true, new: true, runValidators: true }
+  );
+  res.json(notificationForUser);
+};
+
+//get notification
+module.exports.getNotification = async function (req, res) {
+  const q = req.query.q;
+
+  const allUserModel = await Users.find();
+  const allUser = allUserModel.map(function (user) {
+    return {
+      idUser: user._id.toString(),
+      name: user.name,
+    };
+  });
+
+  const allPostModel = await Post.find();
+  const allPost = allPostModel.map(function (post) {
+    return {
+      idPost: post._id.toString(),
+      title: post.title,
+    };
+  });
+
+  const userQuery = await Users.findOne({ _id: q });
+  const notification = userQuery.notification;
+
+  const notificationUser = [];
+  for (user of allUser) {
+    for (noti of notification) {
+      if (user.idUser === noti.id_user_liked) {
+        const mapUser = Object.assign(noti, user);
+        notificationUser.push(mapUser);
+      }
+    }
+  }
+  for (post of allPost) {
+    for (noti of notification) {
+      if (post.idPost === noti.id_post) {
+        Object.assign(noti, post);
+      }
+    }
+  }
+  res.json(notificationUser);
 };

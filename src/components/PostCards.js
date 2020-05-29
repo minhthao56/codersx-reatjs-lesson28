@@ -40,6 +40,7 @@ export class PostCards extends Component {
       });
     });
   };
+
   //Handle like
   handleLike = () => {
     const useLoggedIn = this.props.useLoggedIn;
@@ -51,7 +52,23 @@ export class PostCards extends Component {
     axios.post("http://localhost:3001/posts/like", like).then((res) => {
       // console.log(res.data);
     });
+
+    const id_user_post = this.props.idUser;
+    const contentNotifications = "Like";
+    const notificationLike = {
+      id_user_liked: useLoggedIn._id,
+      id_user_post: id_user_post,
+      id_post: id_post,
+      content: contentNotifications,
+    };
+    axios
+      .post("http://localhost:3001/posts/notification", notificationLike)
+      .then((res) => {
+        console.log(res.data);
+      });
   };
+
+  // Handle Unlike
   handleUnLike = () => {
     const useLoggedIn = this.props.useLoggedIn;
     const id_post = this.props.id_post;
