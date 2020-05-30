@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +27,7 @@ export class PostCards extends Component {
   };
   handleSubmitComment = (event) => {
     event.preventDefault();
-    const useLoggedIn = this.props.useLoggedIn;
+    const useLoggedIn = this.props.logIn.dataUser;
     const id_post = this.props.id_post;
     const valueComment = this.state.comment;
     const comment = {
@@ -43,7 +44,7 @@ export class PostCards extends Component {
 
   //Handle like
   handleLike = () => {
-    const useLoggedIn = this.props.useLoggedIn;
+    const useLoggedIn = this.props.logIn.dataUser;
     const id_post = this.props.id_post;
     const like = {
       id_user_liked: useLoggedIn._id,
@@ -70,7 +71,7 @@ export class PostCards extends Component {
 
   // Handle Unlike
   handleUnLike = () => {
-    const useLoggedIn = this.props.useLoggedIn;
+    const useLoggedIn = this.props.logIn.dataUser;
     const id_post = this.props.id_post;
     const like = {
       id_user_liked: useLoggedIn._id,
@@ -88,11 +89,11 @@ export class PostCards extends Component {
       title,
       createdAt,
       description,
-      index,
       comment,
       like,
+      idUser,
     } = this.props;
-    const useLoggedIn = this.props.useLoggedIn;
+    const useLoggedIn = this.props.logIn.dataUser;
     const arrIdUserLiked = like.filter(function (userLiked) {
       return userLiked.id_user_liked === useLoggedIn._id;
     });
@@ -100,18 +101,18 @@ export class PostCards extends Component {
       <div className="container-postcard">
         <div className="header-card">
           <div className="img-name">
-            <img src={avatarUrl} />
+            <img src={avatarUrl} alt="" />
             <span>{name}</span>
           </div>
           <FontAwesomeIcon icon={faEllipsisH} />
         </div>
         <div className="context-card">
-          <img src={imagePosUrl} />
+          <img src={imagePosUrl} alt="" />
           <div className="icon-heart">
             {arrIdUserLiked.length ? (
-              <img src={HeartImageRed} onClick={this.handleUnLike} />
+              <img src={HeartImageRed} alt="" onClick={this.handleUnLike} />
             ) : (
-              <img src={HeartImage} onClick={this.handleLike} />
+              <img src={HeartImage} alt="" onClick={this.handleLike} />
             )}
             <span>{like.length}Peple</span>
             <span>
@@ -132,10 +133,10 @@ export class PostCards extends Component {
           </form>
         </div>
         <div className="container-comments">
-          {comment.map(function (user) {
+          {comment.map(function (user, key) {
             return (
-              <div className="comment">
-                <img src={user.avatarUrl} />
+              <div className="comment" key={key}>
+                <img src={user.avatarUrl} alt="" />
                 <span className="name-comment">{user.name}</span>
                 <span className="comment-content">{user.comment_content}</span>
               </div>
@@ -146,5 +147,10 @@ export class PostCards extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    logIn: state.logIn,
+  };
+};
 
-export default PostCards;
+export default connect(mapStateToProps)(PostCards);

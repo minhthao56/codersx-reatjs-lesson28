@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { connect } from "react-redux";
 
 export class NotificationCard extends Component {
   constructor(props) {
@@ -9,12 +10,10 @@ export class NotificationCard extends Component {
     };
   }
   componentDidMount() {
-    const idUserLogin = this.props.idUserLogin;
+    const idUserLogin = this.props.logIn.dataUser._id;
     axios
       .get("http://localhost:3001/posts/notification?q=" + idUserLogin)
       .then((res) => {
-        console.log(res.data);
-
         this.setState({
           dataNotifications: res.data,
         });
@@ -27,9 +26,9 @@ export class NotificationCard extends Component {
       <div>
         <div className="Container-notification">
           <ul>
-            {dataNotifications.map((notification) => {
+            {dataNotifications.map((notification, key) => {
               return (
-                <li>
+                <li key={key}>
                   {notification.name} {notification.content}{" "}
                   {notification.title}
                 </li>
@@ -41,5 +40,9 @@ export class NotificationCard extends Component {
     );
   }
 }
-
-export default NotificationCard;
+const mapStateToProps = (state) => {
+  return {
+    logIn: state.logIn,
+  };
+};
+export default connect(mapStateToProps)(NotificationCard);

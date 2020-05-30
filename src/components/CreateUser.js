@@ -114,15 +114,17 @@ export class CreateUser extends Component {
           <p>Get the app.</p>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://apps.apple.com/app/instagram/id389801252?vt=lo"
           >
-            <img src={appleImage} />
+            <img src={appleImage} alt="" />
           </a>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DsignupPage%26ig_mid%3DA85B7263-C3FB-4EA7-B5ED-8E7CF284B2BA%26utm_content%3Dlo%26utm_medium%3Dbadge"
           >
-            <img src={playStoreImage} />
+            <img src={playStoreImage} alt="" />
           </a>
         </div>
       </div>

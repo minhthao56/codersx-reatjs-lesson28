@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { connect } from "react-redux";
 
 import PostCards from "../components/PostCards";
 import "../styles/Home.css";
@@ -14,7 +15,6 @@ export class Home extends Component {
       title: "",
       description: "",
       dataPost: [],
-      isLoggin: false,
     };
   }
   // Handle inputs
@@ -35,7 +35,7 @@ export class Home extends Component {
   //Handle submit form
   handleSubmit = (event) => {
     event.preventDefault();
-    const user = this.props.user;
+    const user = this.props.logIn.dataUser;
     const title = this.state.title;
     const description = this.state.description;
     const fd = new FormData();
@@ -72,14 +72,11 @@ export class Home extends Component {
 
   render() {
     const dataPost = this.state.dataPost;
+    const dataUserLoggedIn = this.props.logIn.dataUser;
 
-    const idUserLogin = this.props.user._id;
-    // if (this.state.isLoggin === false) {
-    //   return <Redirect to="/user/login" />;
-    // }
     return (
       <div className="container-fluid">
-        <p>{this.props.user.name}</p>
+        <p>{dataUserLoggedIn.name}</p>
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -91,9 +88,9 @@ export class Home extends Component {
             <Link to="/user/login">Login</Link>
           </li>
           <li>
-            <img src={HeartImage} onClick={this.handleNotification} />
+            <img src={HeartImage} alt="" onClick={this.handleNotification} />
             <span>(1)</span>
-            <NotificationCard idUserLogin={idUserLogin} />
+            <NotificationCard />
           </li>
         </ul>
         <hr />
@@ -127,8 +124,7 @@ export class Home extends Component {
                 title={post.title}
                 createdAt={post.createdAt}
                 description={post.description}
-                index={index}
-                useLoggedIn={this.props.user}
+                key={index}
                 id_post={post.id_post}
                 comment={post.comment}
                 like={post.like}
@@ -141,5 +137,9 @@ export class Home extends Component {
     );
   }
 }
-
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    logIn: state.logIn,
+  };
+};
+export default connect(mapStateToProps)(Home);

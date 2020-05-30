@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import { connect, useSelector } from "react-redux";
 
 import "./App.css";
 
@@ -13,36 +14,16 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 
 export class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      dataUser: {},
-      isLoggin: false,
-    };
-  }
-  DataUser = (dataUser) => {
-    this.setState({
-      dataUser: dataUser,
-    });
-  };
-  isLoggin = (isAuth) => {
-    this.setState({
-      isLoggin: isAuth,
-    });
-  };
   render() {
     return (
       <Router>
         <div>
           <Switch>
-            <PrivateRoute exact path="/" isAuthenticated={this.state.isLoggin}>
-              <Home user={this.state.dataUser} />
+            <PrivateRoute exact path="/">
+              <Home />
             </PrivateRoute>
             <Route path="/user/login">
-              <Login
-                PassDataToApp={this.DataUser}
-                PassDataLogin={this.isLoggin}
-              />
+              <Login />
             </Route>
             <Route path="/user/create">
               <CreateUser />
@@ -55,7 +36,8 @@ export class App extends Component {
 }
 
 function PrivateRoute({ isAuthenticated, children, ...rest }) {
-  console.log(isAuthenticated);
+  const mapStateToProps = useSelector((state) => state.logIn);
+  isAuthenticated = mapStateToProps.isAuth;
   return (
     <Route
       {...rest}
@@ -74,4 +56,9 @@ function PrivateRoute({ isAuthenticated, children, ...rest }) {
     />
   );
 }
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    logIn: state.logIn,
+  };
+};
+export default connect(mapStateToProps)(App);

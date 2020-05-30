@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import { connect } from "react-redux";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Login.css";
@@ -8,6 +9,8 @@ import "../styles/Login.css";
 import appleImage from "../images/app-icon.png";
 import playStoreImage from "../images/googleplay.png";
 import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
+
+import * as actions from "../actions/index";
 
 export class Login extends Component {
   constructor() {
@@ -35,6 +38,8 @@ export class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
+
+    this.props.onLogIn(user);
     axios
       .post("http://localhost:3001/users/login", user)
       .then((res) => {
@@ -42,22 +47,21 @@ export class Login extends Component {
           isAuth: true,
           dataUser: res.data,
         });
-        this.props.PassDataToApp(this.state.dataUser);
-        this.props.PassDataLogin(this.state.isAuth);
       })
 
       .catch((err) => {
+        console.log(err);
         if (err.response.status === 401) {
           this.setState({
             mes: err.response.data.msg,
           });
         }
-        // console.log(err);
       });
   };
 
   render() {
-    if (this.state.isAuth === true) {
+    const isAuth = this.props.logIn.isAuth;
+    if (isAuth === true) {
       return (
         <Redirect
           to={{
@@ -68,6 +72,7 @@ export class Login extends Component {
         />
       );
     }
+
     return (
       <div className="container-fluid">
         <div className="container-form">
@@ -109,20 +114,33 @@ export class Login extends Component {
           <p>Get the app.</p>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://apps.apple.com/app/instagram/id389801252?vt=lo"
           >
-            <img src={appleImage} />
+            <img src={appleImage} alt="" />
           </a>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://play.google.com/store/apps/details?id=com.instagram.android&referrer=utm_source%3Dinstagramweb%26utm_campaign%3DsignupPage%26ig_mid%3DA85B7263-C3FB-4EA7-B5ED-8E7CF284B2BA%26utm_content%3Dlo%26utm_medium%3Dbadge"
           >
-            <img src={playStoreImage} />
+            <img src={playStoreImage} alt="" />
           </a>
         </div>
       </div>
     );
   }
 }
-
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    logIn: state.logIn,
+  };
+};
+const mapDisPatchToProps = (dispatch, ownProps) => {
+  return {
+    onLogIn: (user) => {
+      dispatch(actions.loggIn(user));
+    },
+  };
+};
+export default connect(mapStateToProps, mapDisPatchToProps)(Login);
