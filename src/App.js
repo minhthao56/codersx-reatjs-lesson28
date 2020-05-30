@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 
 import "./App.css";
 
@@ -12,6 +17,7 @@ export class App extends Component {
     super();
     this.state = {
       dataUser: {},
+      isLoggin: false,
     };
   }
   DataUser = (dataUser) => {
@@ -19,16 +25,24 @@ export class App extends Component {
       dataUser: dataUser,
     });
   };
+  isLoggin = (isAuth) => {
+    this.setState({
+      isLoggin: isAuth,
+    });
+  };
   render() {
     return (
       <Router>
         <div>
           <Switch>
-            <Route exact path="/">
+            <PrivateRoute exact path="/" isAuthenticated={this.state.isLoggin}>
               <Home user={this.state.dataUser} />
-            </Route>
+            </PrivateRoute>
             <Route path="/user/login">
-              <Login PassDataToApp={this.DataUser} />
+              <Login
+                PassDataToApp={this.DataUser}
+                PassDataLogin={this.isLoggin}
+              />
             </Route>
             <Route path="/user/create">
               <CreateUser />
@@ -40,4 +54,24 @@ export class App extends Component {
   }
 }
 
+function PrivateRoute({ isAuthenticated, children, ...rest }) {
+  console.log(isAuthenticated);
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isAuthenticated ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/user/login",
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 export default App;

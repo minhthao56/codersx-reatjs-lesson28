@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import ImgInstagram from "../images/1200px-Instagram_logo.svg.png";
 import "../styles/CreateUser.css";
-import { Link } from "react-router-dom";
+
 import appleImage from "../images/app-icon.png";
 import playStoreImage from "../images/googleplay.png";
-import axios from "axios";
 
 export class CreateUser extends Component {
   constructor() {
@@ -14,6 +16,7 @@ export class CreateUser extends Component {
       name: "",
       email: "",
       password: "",
+      isDone: false,
     };
   }
   handleChange = (event) => {
@@ -40,11 +43,23 @@ export class CreateUser extends Component {
         name: "",
         email: "",
         password: "",
+        isDone: true,
       });
     });
   };
 
   render() {
+    if (this.state.isDone === true) {
+      return (
+        <Redirect
+          to={{
+            pathname: "/user/login",
+
+            state: { isAuth: true },
+          }}
+        />
+      );
+    }
     return (
       <div className="container-fluid">
         <div className="container-form">
@@ -53,7 +68,7 @@ export class CreateUser extends Component {
           <form
             method="POST"
             onSubmit={this.handleSubmit}
-            enctype="multipart/form-data"
+            encType="multipart/form-data"
           >
             <div className="form-group">
               <input

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 import PostCards from "../components/PostCards";
@@ -14,6 +14,7 @@ export class Home extends Component {
       title: "",
       description: "",
       dataPost: [],
+      isLoggin: false,
     };
   }
   // Handle inputs
@@ -73,7 +74,9 @@ export class Home extends Component {
     const dataPost = this.state.dataPost;
 
     const idUserLogin = this.props.user._id;
-
+    // if (this.state.isLoggin === false) {
+    //   return <Redirect to="/user/login" />;
+    // }
     return (
       <div className="container-fluid">
         <p>{this.props.user.name}</p>

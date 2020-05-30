@@ -42,8 +42,8 @@ export class Login extends Component {
           isAuth: true,
           dataUser: res.data,
         });
-
         this.props.PassDataToApp(this.state.dataUser);
+        this.props.PassDataLogin(this.state.isAuth);
       })
 
       .catch((err) => {
@@ -58,7 +58,15 @@ export class Login extends Component {
 
   render() {
     if (this.state.isAuth === true) {
-      return <Redirect to="/" />;
+      return (
+        <Redirect
+          to={{
+            pathname: "/",
+
+            state: { isAuth: true },
+          }}
+        />
+      );
     }
     return (
       <div className="container-fluid">
@@ -70,7 +78,7 @@ export class Login extends Component {
             </div>
           ) : null}
 
-          <form onSubmit={this.handleSubmit} enctype="multipart/form-data">
+          <form onSubmit={this.handleSubmit} encType="multipart/form-data">
             <div className="form-group">
               <input
                 type="email"
