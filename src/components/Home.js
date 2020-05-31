@@ -7,6 +7,9 @@ import PostCards from "../components/PostCards";
 import "../styles/Home.css";
 import HeartImage from "../images/heart.svg";
 import NotificationCard from "../components/NotificationCard";
+import IconUploadPost from "../images/picture.svg";
+import LogoIntasgram from "../images/instagram-1.svg";
+import HomeImage from "../images/home.svg";
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +18,9 @@ export class Home extends Component {
       title: "",
       description: "",
       dataPost: [],
+      onNotification: false,
     };
+    this.heartNoti = React.createRef();
   }
   // Handle inputs
   handleChange = (event) => {
@@ -69,69 +74,94 @@ export class Home extends Component {
       });
     });
   }
+  handleNotification = () => {
+    this.setState({
+      onNotification: !this.state.onNotification,
+    });
+  };
 
   render() {
     const dataPost = this.state.dataPost;
     const dataUserLoggedIn = this.props.logIn.dataUser;
 
     return (
-      <div className="container-fluid">
-        <p>{dataUserLoggedIn.name}</p>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/user/create">CreateUser</Link>
-          </li>
-          <li>
-            <Link to="/user/login">Login</Link>
-          </li>
-          <li>
-            <img src={HeartImage} alt="" onClick={this.handleNotification} />
-            <span>(1)</span>
-            <NotificationCard />
-          </li>
-        </ul>
-        <hr />
+      <div className="container-f">
+        <nav className="navi-bar">
+          <div className="contaiter-in-navi">
+            <img id="Loginintas" src={LogoIntasgram} />
+            <ul>
+              <li>
+                <Link to="/">
+                  {" "}
+                  <img src={HomeImage} />
+                </Link>
+              </li>
+              <li>
+                <img
+                  src={HeartImage}
+                  alt=""
+                  onClick={this.handleNotification}
+                />
+                {this.state.onNotification ? <NotificationCard /> : null}
+              </li>
+              <li>
+                <div className="container-avatar">
+                  <img src={dataUserLoggedIn.avatarUrl} />
+                  <span>{dataUserLoggedIn.name}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
         {/* Home */}
-        <div className="container-post">
-          <form onSubmit={this.handleSubmit}>
-            <input
-              type="text"
-              name="title"
-              onChange={this.handleChange}
-              value={this.state.title}
-            />
-            <textarea
-              rows="7"
-              cols="50"
-              name="description"
-              value={this.state.description}
-              onChange={this.handleChange}
-            ></textarea>
-            <input type="file" onChange={this.handleFile} />
-            <button type="submit">Post</button>
-          </form>
-        </div>
-        <div>
-          {dataPost.map((post, index) => {
-            return (
-              <PostCards
-                name={post.name}
-                avatarUrl={post.avatarUrl}
-                imagePosUrl={post.imagePosUrl}
-                title={post.title}
-                createdAt={post.createdAt}
-                description={post.description}
-                key={index}
-                id_post={post.id_post}
-                comment={post.comment}
-                like={post.like}
-                idUser={post.idUser}
+        <div className="container-home">
+          <div className="container-post">
+            <form onSubmit={this.handleSubmit}>
+              <input
+                type="text"
+                name="title"
+                placeholder="Your title"
+                onChange={this.handleChange}
+                value={this.state.title}
               />
-            );
-          })}
+              <textarea
+                rows="7"
+                cols="50"
+                name="description"
+                placeholder="What do you want to tell?"
+                value={this.state.description}
+                onChange={this.handleChange}
+              ></textarea>
+
+              <div className="button-submit-form">
+                <label for="file">
+                  <img src={IconUploadPost} />
+                </label>
+                <input type="file" id="file" onChange={this.handleFile} />
+                <button type="submit">Post</button>
+              </div>
+            </form>
+          </div>
+          <div>
+            {dataPost.map((post, index) => {
+              return (
+                <PostCards
+                  name={post.name}
+                  avatarUrl={post.avatarUrl}
+                  imagePosUrl={post.imagePosUrl}
+                  title={post.title}
+                  createdAt={post.createdAt}
+                  description={post.description}
+                  key={index}
+                  id_post={post.id_post}
+                  comment={post.comment}
+                  like={post.like}
+                  idUser={post.idUser}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     );

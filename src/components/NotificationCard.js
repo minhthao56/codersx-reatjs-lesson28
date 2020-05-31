@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
+import "../styles/NotificationCard.css";
 
 export class NotificationCard extends Component {
   constructor(props) {
@@ -23,14 +24,15 @@ export class NotificationCard extends Component {
     const dataNotifications = this.state.dataNotifications;
 
     return (
-      <div>
-        <div className="Container-notification">
+      <div className="container-notification">
+        <div className="Shade"></div>
+        <div className="notification-card">
           <ul>
             {dataNotifications.map((notification, key) => {
               return (
                 <li key={key}>
-                  {notification.name} {notification.content}{" "}
-                  {notification.title}
+                  <b>{notification.name} </b> {notification.content} your post
+                  <b>{notification.title}</b>
                 </li>
               );
             })}

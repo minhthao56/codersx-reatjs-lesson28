@@ -1,4 +1,120 @@
+.container-home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+}
 .container-post form {
   display: flex;
   flex-direction: column;
+}
+.container-post {
+  border: solid;
+  width: 620px;
+  border-width: 1px;
+  border-color: rgba(150, 150, 150, 0.3);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  background-color: white;
+}
+
+.container-post input {
+  height: 45px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 20px;
+  outline: none;
+}
+.container-post input:focus {
+  outline: none;
+}
+input[placeholder="Your title"]::placeholder {
+  font-size: 15px;
+}
+textarea[placeholder="What do you want to tell?"]::placeholder {
+  font-size: 20px;
+}
+.container-post textarea {
+  border: none;
+  height: 70px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.container-post textarea:focus {
+  outline: none;
+}
+input[id="file"] {
+  display: none;
+}
+.container-post img {
+  height: 32px;
+  width: 32px;
+}
+.container-post label {
+  height: 40px;
+  width: 60px;
+  background-color: #eeeeee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+.button-submit-form {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px 10px 10px;
+}
+.button-submit-form button {
+  color: #3aacf7;
+  font-weight: bold;
+  border: none;
+  background-color: white;
+}
+/* Navi */
+.navi-bar {
+  width: 100%;
+  background-color: white;
+  position: fixed;
+  height: 54px;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgba(150, 150, 150, 0.3);
+}
+.navi-bar ul {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+.navi-bar li {
+  margin-right: 10px;
+  padding-left: 10px;
+}
+.navi-bar img {
+  height: 24px;
+  width: 24px;
+}
+.contaiter-in-navi {
+  display: flex;
+  justify-content: space-between;
+  width: 800px;
+  height: 100%;
+}
+.container-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-avatar span {
+  margin-left: 5px;
+}
+#Loginintas {
+  width: 120px;
+  height: 60px;
 }

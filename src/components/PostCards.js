@@ -114,7 +114,7 @@ export class PostCards extends Component {
             ) : (
               <img src={HeartImage} alt="" onClick={this.handleLike} />
             )}
-            <span>{like.length}Peple</span>
+            <span>{like.length} People liked</span>
             <span>
               <Moment fromNow>{createdAt}</Moment>
             </span>
